@@ -1,0 +1,36 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+sharding:
+  jdbc:
+    ####ds1
+    datasource:
+      names: userdb3
+      userdb3:
+        password: 123456
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://192.168.223.141:3306/userdb3
+        username: root
+    config:
+      sharding:
+        tables:
+          t_order:
+            table-strategy:
+              inline:
+                #### 根据userid 进行分片
+                sharding-column: user_id
+                algorithm-expression: userdb3.t_order_$->{user_id % 2}
+            actual-data-nodes: userdb3.t_order_$->{0..1}
+        props:
+          sql:
+            ### 开启分片日志
+            show: true
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapperLocations: classpath:mybatis/*.xml
+  type-aliases-package: com.mayikt.entity

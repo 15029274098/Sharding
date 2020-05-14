@@ -1,0 +1,16 @@
+###数据库访问连接
+spring:
+  jdbc:
+    db0:
+      password: 123456
+      className: com.mysql.jdbc.Driver
+      url: jdbc:mysql://192.168.223.141:3306/%s?characterEncoding=utf-8
+      username: root
+  jpa: 
+    database: mysql 
+    show-sql: true 
+    hibernate: 
+    ## 自己建表 
+      ddl-auto: none
+  application: 
+    name: sharding-jdbc-first 
